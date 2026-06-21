@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  /* Colores extraídos directamente de tu imagen de referencia */
+  --bakery-pink: #d49a9a;   /* El rosa pastel del encabezado */
+  --bakery-brown: #5c3d32;  /* El marrón chocolate de las letras */
+  --bakery-cream: #fdfaf5;  /* El fondo cremita cálido */
+}
+
+@theme inline {
+  --color-bakery-pink: var(--bakery-pink);
+  --color-bakery-brown: var(--bakery-brown);
+  --color-bakery-cream: var(--bakery-cream);
+}
+
+body {
+  background-color: var(--bakery-cream);
+  color: var(--bakery-brown);
+  font-family: 'Georgia', serif; /* Acercándonos a la tipografía de tu imagen */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* El truco CSS para hacer el borde de ondas (scalloped edge) del encabezado */
+.borde-ondas {
+  background-size: 30px 30px;
+  background-image: radial-gradient(circle at 15px 0, transparent 16px, var(--bakery-pink) 17px);
+  height: 20px;
+  width: 100%;
+  transform: translateY(-1px); /* Evita líneas blancas indeseadas */
+}
