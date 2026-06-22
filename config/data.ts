@@ -1,30 +1,31 @@
 export const storeConfig = {
   brand: {
     name: "Cenoura Bakery",
-    // Número donde llegarán los pedidos (puedes cambiarlo mañana)
-    whatsappNumber: "+59176309344", 
+    // Número de WhatsApp configurado para la recepción de comandas
+    whatsappNumber: "+59175739871", 
     currency: "Bs",
-    logoPath: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=150" // Temporal hasta enlazar tu logo local
+    logoPath: "/conejo-final.png" // Apunta directamente al archivo local en public/logo.png
   },
   design: {
-    heroImage: "https://images.unsplash.com/photo-1578985543219-12a4f48b1d6c?q=80&w=1920",
+    // Foto principal de fondo (Asegúrate de guardar tu imagen en public/fondo.jpg)
+    heroImage: "/fondo.jpg", 
   },
   logistics: {
-    baseDeliveryFee: 15, // Costo estándar para envíos a domicilio
+    baseDeliveryFee: 15, // Tarifa base para envíos a domicilio
     freePickupLocations: [
       "Comunidad Católica Shalom (Av. Virgen de Cotoca entre 2do y 3er anillo)",
       "Plazuela Blacutt"
     ]
   },
   catalog: [
-    // ================= PORCIONES =================
+    // ================= CATEGORÍA: PORCIONES =================
     {
       id: "porcion-clasica",
       name: "Porción Clásica",
       description: "Nuestra receta tradicional de zanahoria, esponjosa y perfecta para acompañar un café.",
       category: "Porciones",
       price: 4, 
-      image: "https://images.unsplash.com/photo-1622814197607-4e6b189ff1e3?q=80&w=600",
+      image: "https://images.unsplash.com/photo-1622814197607-4e6b189ff1e3?q=80&w=600", // Cambiar por ruta local cuando tengas la foto real
       modifiers: []
     },
     {
@@ -36,7 +37,7 @@ export const storeConfig = {
       image: "https://images.unsplash.com/photo-1578985543219-12a4f48b1d6c?q=80&w=600",
       modifiers: []
     },
-    // ================= TORTAS ENTERAS =================
+    // ================= CATEGORÍA: TORTAS ENTERAS =================
     {
       id: "torta-clasica",
       name: "Torta Entera Clásica",
