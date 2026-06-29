@@ -32,10 +32,10 @@ export const storeConfig = {
       name: "Torta de Zanahoria Familiar",
       description: "Tamaño familiar ideal para compartir. Bañada en nuestro ganache de chocolate o totalmente simple de pura zanahoria.",
       category: "Nuestro Menú",
-      price: 84, // Precio base con cobertura
+      price: 120, // Precio base con cobertura
       image: "/torta-entera.jpg", // Guarda tu foto como public/torta-entera.jpg
       modifiers: [
-        { id: "sin-cobertura", name: "Sin cobertura de chocolate", priceDelta: -12 }
+        { id: "sin-cobertura", name: "Sin cobertura de chocolate", priceDelta: -15 }
       ]
     }
   ]
