@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 
+// CORRECCIÓN 1: Alineamos el nombre de la variable a "priceDelta"
 export interface CartModifier {
+  id: string;
   name: string;
-  extraPrice: number;
+  priceDelta: number;
 }
 
 export interface CartItem {
@@ -29,13 +31,12 @@ export const useCartStore = create<CartState>((set, get) => ({
   
   addToCart: (newItem) => {
     set((state) => {
-      // 1. Calculamos el precio base por unidad (incluyendo extras si los hay)
-      const modifiersTotal = newItem.selectedModifiers.reduce((acc, mod) => acc + mod.extraPrice, 0);
-      const unitPrice = newItem.basePrice + modifiersTotal;
-      const trimmedInstructions = newItem.instructions.trim();
+      // CORRECCIÓN 2: Forzamos a que el precio base siempre sea un Número limpio.
+      // Ya no sumamos los extras aquí, porque el ProductModal ya manda el precio final correcto.
+      const unitPrice = Number(newItem.basePrice) || 0;
+      const trimmedInstructions = (newItem.instructions || "").trim();
 
-      // 2. Buscamos si ya existe un producto IDÉNTICO en el carrito
-      // (Mismo ID de producto, mismas instrucciones y mismos modificadores)
+      // Buscamos si ya existe un producto IDÉNTICO en el carrito
       const existingItemIndex = state.items.findIndex(
         (item) => 
           item.productId === newItem.productId && 
@@ -43,9 +44,8 @@ export const useCartStore = create<CartState>((set, get) => ({
           JSON.stringify(item.selectedModifiers) === JSON.stringify(newItem.selectedModifiers)
       );
 
-      // 3. Lógica de agrupación
+      // Lógica de agrupación
       if (existingItemIndex !== -1) {
-        // Si ya existe, clonamos el estado y le sumamos la nueva cantidad a esa fila
         const updatedItems = [...state.items];
         const existingItem = updatedItems[existingItemIndex];
         
@@ -54,16 +54,16 @@ export const useCartStore = create<CartState>((set, get) => ({
         updatedItems[existingItemIndex] = {
           ...existingItem,
           quantity: newQuantity,
-          itemTotal: unitPrice * newQuantity // Recalculamos el total de esa fila
+          itemTotal: unitPrice * newQuantity 
         };
 
         return { items: updatedItems };
       }
 
-      // 4. Si no existe nada igual, lo agregamos como una fila completamente nueva
+      // Si no existe, lo agregamos como fila nueva
       const cartItem: CartItem = {
         ...newItem,
-        id: Date.now().toString() + Math.random().toString(36).substr(2, 5), // ID único e irrepetible
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 7), 
         instructions: trimmedInstructions,
         itemTotal: unitPrice * newItem.quantity
       };
@@ -79,6 +79,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   clearCart: () => set({ items: [] }),
 
   getCartTotal: () => {
-    return get().items.reduce((total, item) => total + item.itemTotal, 0);
+    // CORRECCIÓN 3: Blindaje anti-NaN al sumar el total del carrito
+    return get().items.reduce((total, item) => total + (Number(item.itemTotal) || 0), 0);
   }
 }));

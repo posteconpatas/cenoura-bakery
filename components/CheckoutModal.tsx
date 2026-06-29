@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from "framer-motion";
 const MapPicker = dynamic(() => import("./MapPicker"), { ssr: false });
 
 export default function CheckoutModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
-  // Ahora traemos removeFromCart para poder borrar ítems
   const { items, getCartTotal, removeFromCart } = useCartStore();
   
   const [name, setName] = useState("");
@@ -29,7 +28,8 @@ export default function CheckoutModal({ isOpen, onClose }: { isOpen: boolean, on
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split('T')[0];
 
-  const total = getCartTotal();
+  // Blindaje anti-NaN para el total
+  const total = Number(getCartTotal()) || 0;
 
   const handleGetLocation = () => {
     setIsLocating(true);
@@ -122,7 +122,8 @@ export default function CheckoutModal({ isOpen, onClose }: { isOpen: boolean, on
                         )}
                       </div>
                       <div className="flex flex-col items-end gap-2 ml-4 shrink-0">
-                        <span className="font-black text-[var(--bakery-brown)]">{item.itemTotal.toFixed(2)} Bs</span>
+                        {/* Blindaje anti-NaN en el renderizado */}
+                        <span className="font-black text-[var(--bakery-brown)]">{(Number(item.itemTotal) || 0).toFixed(2)} Bs</span>
                         <button 
                           onClick={() => removeFromCart(item.id)}
                           className="text-red-400 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md"
